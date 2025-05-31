@@ -18,7 +18,10 @@ const NoteSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: [true, 'Please enter the user who created the note'],
-    }
+    },
+    images: {
+        type: [String],
+    },
 })
 
 export const NoteModel = mongoose.model('Note', NoteSchema)

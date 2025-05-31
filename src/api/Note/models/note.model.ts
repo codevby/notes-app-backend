@@ -8,4 +8,5 @@ export type Note = {
     content: string,
     type: NoteType,
     userId: string,
+    images: string[],
 }

@@ -34,7 +34,7 @@ async function createNote(req: Request, res: Response) {
     try{
 
         const reqNote = req.body as Note;
-        const userID = req.params.userID;
+        const userID = req.query.userID;
 
         if(!userID){
             res.status(400).json({message: 'User ID is required'});
@@ -54,6 +54,7 @@ async function createNote(req: Request, res: Response) {
             title: reqNote.title,
             content: reqNote.content,
             type: reqNote.type,
+            images: reqNote.images,
             user: userID
         }
         
