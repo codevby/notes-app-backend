@@ -1,4 +1,4 @@
-import { NextFunction, Router } from 'express';
+import { Router } from 'express';
 
 import { NoteController } from './infraestructure/note.controller';
 import { validateID } from '../../middlewares/validateID.middleware';
@@ -9,7 +9,8 @@ noteRouter
 
     .get('/', NoteController.getAllNotes)
     .get('/:id', validateID(), NoteController.getNoteById)
-    .post('/', NoteController.createNote)
+    .get('/by-user/:userID', validateID(), NoteController.getNotesByUser)
+    .post('/:userID', NoteController.createNote)
     .put('/:id', validateID(),NoteController.updateNote)
     .delete('/:id', validateID(),NoteController.deleteNote)
 

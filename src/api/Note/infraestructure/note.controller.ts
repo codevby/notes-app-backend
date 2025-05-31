@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 
 import { NoteModel } from "../domain/note.model";
 import { Note } from "../models/note.model";
-import { title } from "process";
-import { isValidObjectId } from "mongoose";
 
 async function getAllNotes(req: Request, res: Response) {
     try{
@@ -36,6 +34,12 @@ async function createNote(req: Request, res: Response) {
     try{
 
         const reqNote = req.body as Note;
+        const userID = req.params.userID;
+
+        if(!userID){
+            res.status(400).json({message: 'User ID is required'});
+            return;
+        }
 
         if(!reqNote.title){
             res.status(400).json({message: 'Title are required'});
@@ -48,7 +52,9 @@ async function createNote(req: Request, res: Response) {
 
         const finalNote = {
             title: reqNote.title,
-            content: reqNote.content
+            content: reqNote.content,
+            type: reqNote.type,
+            user: userID
         }
         
         const note = new NoteModel(finalNote);
@@ -59,6 +65,34 @@ async function createNote(req: Request, res: Response) {
 
         res.status(500).json(error);
 
+    }
+}
+
+async function getNotesByUser(req: Request, res: Response) {
+    try{
+        const userID = req.query.userID;
+
+        if(!userID){
+            res.status(400).json({message: 'User ID is required'});
+            return;
+        }
+
+        const notes = await NoteModel.find({user: userID});
+
+        if(notes.length === 0){
+            res.status(404).json({message: 'This user has no notes'});
+            return;
+        }
+
+        if(!notes){
+            res.status(404).json({message: 'Notes not found'});
+            return;
+        }
+
+        res.status(200).json(notes);
+
+    }catch(error){
+        res.status(500).json(error);
     }
 }
 
@@ -126,6 +160,7 @@ async function createNotesBatch(req: Request, res: Response) { //TODO: Endpoint 
 export const NoteController = {
     getAllNotes,
     getNoteById,
+    getNotesByUser,
     createNote,
     createNotesBatch,
     updateNote,
