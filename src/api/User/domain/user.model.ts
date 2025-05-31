@@ -26,6 +26,17 @@ const UserSchema = new mongoose.Schema({
         required: true,
         enum: ['developer', 'user'],
     }
-});
+}, { discriminatorKey: 'role'} );
 
 export const UserModel = mongoose.model("User", UserSchema);
+
+export const Developer = UserModel.discriminator('Developer', new mongoose.Schema({
+    projects:{
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Project',
+            },
+        ],
+    }
+}));
