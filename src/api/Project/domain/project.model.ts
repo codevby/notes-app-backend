@@ -1,6 +1,6 @@
-import mongoose, { Schema, model, Document } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const ProyectSchema = new Schema({
+const ProjectSchema = new Schema({
     name: {
         type: String,
         required: [true, 'Please enter the name of the project'],
@@ -41,4 +41,4 @@ const ProyectSchema = new Schema({
     },
 });
 
-export const ProyectModel = mongoose.model("Proyect", ProyectSchema);
+export const ProjectModel = mongoose.model("Project", ProjectSchema);

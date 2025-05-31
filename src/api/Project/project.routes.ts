@@ -1,17 +1,17 @@
 import { Router } from 'express';
 
 import { validateID } from '../../middlewares/validateID.middleware';
-import { ProyectController } from './infraestructure/project.controller';
+import { ProjectController } from './infraestructure/project.controller';
 
 const projectRouter = Router();
 
 projectRouter
 
-    .get('/', ProyectController.getAllProyects)
-    .get('/:id', validateID(), ProyectController.getProyectById)
-    .get('/by-user/:userID', validateID(), ProyectController.getProyectsByUser)
-    .post('/:userID', ProyectController.createProyect)
-    .put('/:id', validateID(),ProyectController.updateProyect)
-    .delete('/:id', validateID(),ProyectController.deleteProyect)
+    .get('/', ProjectController.getAllProjects)
+    .get('/:id', validateID(), ProjectController.getProjectById)
+    .get('/by-user/:userID', validateID(), ProjectController.getProjectsByUser)
+    .post('/:userID', ProjectController.createProject)
+    .put('/:id', validateID(),ProjectController.updateProject)
+    .delete('/:id', validateID(),ProjectController.deleteProject)
 
 export const projectRouters = projectRouter;

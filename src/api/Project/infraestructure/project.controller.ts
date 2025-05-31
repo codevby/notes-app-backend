@@ -1,40 +1,40 @@
 import { Request, Response } from "express";
 
-import { ProyectModel } from "../domain/project.model";
+import { ProjectModel as ProjectModel } from "../domain/project.model";
 import { Project } from "../models/project.model";
 import { NoteModel } from "../../Note/domain/note.model";
 
-async function getAllProyects(req: Request, res: Response) {
+async function getAllProjects(req: Request, res: Response) {
     try{
-        const proyects = await ProyectModel.find({});
-        res.status(200).json(proyects);
+        const projects = await ProjectModel.find({});
+        res.status(200).json(projects);
     }catch(error){
         res.status(500).json(error);
     }
 }
 
-async function getProyectById(req: Request, res: Response) {
+async function getProjectById(req: Request, res: Response) {
     
     try{
 
-        const proyect = await ProyectModel.findById(req.params.id);
+        const project = await ProjectModel.findById(req.params.id);
 
-        if(!proyect){
-            res.status(404).json({message: 'Proyect not found'});
+        if(!project){
+            res.status(404).json({message: 'Project not found'});
             return;
         }
 
-        res.status(200).json(proyect);
+        res.status(200).json(project);
 
     }catch(error){
         res.status(500).json(error);
     }
 }
 
-async function createProyect(req: Request, res: Response) {
+async function createProject(req: Request, res: Response) {
     try{
 
-        const reqProyect = req.body as Project;
+        const reqProject = req.body as Project;
         const notes = req.body.notes;
         const userID = req.params.userID;
 
@@ -43,12 +43,12 @@ async function createProyect(req: Request, res: Response) {
             return;
         }
 
-        if(!reqProyect.name){
-            res.status(400).json({message: 'Proyect name are required'});
+        if(!reqProject.name){
+            res.status(400).json({message: 'Project name are required'});
             return;
         }
-        if(reqProyect.name.length < 1 || reqProyect.name.length > 100){
-            res.status(400).json({message: 'Proyect name must be longer than 1 character and shorter than 100 characters'});
+        if(reqProject.name.length < 1 || reqProject.name.length > 100){
+            res.status(400).json({message: 'Project name must be longer than 1 character and shorter than 100 characters'});
             return;
         }
 
@@ -63,19 +63,19 @@ async function createProyect(req: Request, res: Response) {
         }
 
 
-        const finalProyect = {
-            name: reqProyect.name,
-            description: reqProyect.description,
-            images: reqProyect.images,
-            links: reqProyect.links,
-            status: reqProyect.status,
+        const finalProject = {
+            name: reqProject.name,
+            description: reqProject.description,
+            images: reqProject.images,
+            links: reqProject.links,
+            status: reqProject.status,
             notes: notes,
             user: userID
         }
         
-        const proyect = new ProyectModel(finalProyect);
-        await proyect.save();
-        res.status(201).json(proyect);
+        const project = new ProjectModel(finalProject);
+        await project.save();
+        res.status(201).json(project);
 
     }catch(error){
 
@@ -84,7 +84,7 @@ async function createProyect(req: Request, res: Response) {
     }
 }
 
-async function getProyectsByUser(req: Request, res: Response) {
+async function getProjectsByUser(req: Request, res: Response) {
     try{
         const userID = req.query.userID;
 
@@ -93,67 +93,67 @@ async function getProyectsByUser(req: Request, res: Response) {
             return;
         }
 
-        const proyects = await ProyectModel.find({user: userID});
+        const projects = await ProjectModel.find({user: userID});
 
-        if(proyects.length === 0){
-            res.status(404).json({message: 'This user has no proyects'});
+        if(projects.length === 0){
+            res.status(404).json({message: 'This user has no projects'});
             return;
         }
 
-        if(!proyects){
-            res.status(404).json({message: 'Proyects not found'});
+        if(!projects){
+            res.status(404).json({message: 'Projects not found'});
             return;
         }
 
-        res.status(200).json(proyects);
+        res.status(200).json(projects);
 
     }catch(error){
         res.status(500).json(error);
     }
 }
 
-async function updateProyect(req: Request, res: Response) {
+async function updateProject(req: Request, res: Response) {
     try{
 
         const options = { runValidators: true, new: true };
 
-        const proyect = await ProyectModel.findByIdAndUpdate(req.params.id, req.body, options);
+        const project = await ProjectModel.findByIdAndUpdate(req.params.id, req.body, options);
 
-        if(!proyect){
-            res.status(404).json({message: 'Proyect not found'});
+        if(!project){
+            res.status(404).json({message: 'Project not found'});
             return;
         }
 
-        res.status(200).json(proyect);
+        res.status(200).json(project);
 
     }catch(error){
-        res.status(500).json({ error: 'Error al actualizar el proyecto', details: error });
+        res.status(500).json({ error: 'Error updating the project', details: error });
     }
 }
 
-async function deleteProyect(req: Request, res: Response) {
+async function deleteProject(req: Request, res: Response) {
     try{
 
-        const proyect = await ProyectModel.findByIdAndUpdate(req.params.id, {status: false});
+        const project = await ProjectModel.findByIdAndUpdate(req.params.id, {status: false});
 
-        if(!proyect){
-            res.status(404).json({message: 'Proyect not found'});
+        if(!project){
+            res.status(404).json({message: 'Project not found'});
             return;
         }
 
         res.status(200).json({
-            msg: 'Proyect deleted successfully'
+            msg: 'Project deleted successfully'
         });
     }catch(error){
         res.status(500).json(error);
     }
 }
 
-export const ProyectController = {
-    getAllProyects,
-    getProyectById,
-    getProyectsByUser,
-    createProyect,
-    updateProyect,
-    deleteProyect,
+export const ProjectController = {
+    getAllProjects,
+    getProjectById,
+    getProjectsByUser,
+    createProject,
+    updateProject,
+    deleteProject,
 }

@@ -1,12 +1,9 @@
-enum UserRole {
-    developer,
-    user,
-}
+import { Types } from "mongoose"
 
 export type User = {
     name: string,
     email: string,
     password: string,
     status: boolean,
-    role: UserRole,
+    projects: Types.ObjectId[]
 }

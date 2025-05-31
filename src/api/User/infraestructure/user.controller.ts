@@ -31,12 +31,8 @@ async function createUser(req: Request, res: Response) {
             res.status(400).json({message: 'Name is required'});
             return;
         }
-        if(!reqUser.email){
-            res.status(400).json({message: 'Email is required'});
-            return;
-        }
-        if(!reqUser.password){
-            res.status(400).json({message: 'Password is required'});
+        if(!reqUser.email || !reqUser.password){
+            res.status(400).json({message: 'Email and password are required'});
             return;
         }
         const user = new UserModel(reqUser);

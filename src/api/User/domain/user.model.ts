@@ -21,17 +21,15 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
-    role: {
-        type: String,
-        required: true,
-        enum: ['developer', 'user'],
-    }
-}, { discriminatorKey: 'role'} );
-
-export const UserModel = mongoose.model("User", UserSchema);
-
-export const Developer = UserModel.discriminator('Developer', new mongoose.Schema({
-    projects:{
+    projects: {
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Project',
+            },
+        ],
+    },
+    favorites: {
         type: [
             {
                 type: mongoose.Schema.Types.ObjectId,
@@ -39,4 +37,6 @@ export const Developer = UserModel.discriminator('Developer', new mongoose.Schem
             },
         ],
     }
-}));
+});
+
+export const UserModel = mongoose.model("User", UserSchema);
