@@ -1,3 +1,5 @@
+import { Types } from "mongoose"
+
 enum NoteType {
     bugreport,
     featurerequest,
@@ -9,4 +11,5 @@ export type Note = {
     type: NoteType,
     userId: string,
     images: string[],
+    project: Types.ObjectId
 }

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import { NoteModel } from "../domain/note.model";
 import { Note } from "../models/note.model";
+import { ProjectModel } from "../../Project/domain/project.model";
 
 async function getAllNotes(req: Request, res: Response) {
     try{
@@ -35,12 +36,16 @@ async function createNote(req: Request, res: Response) {
 
         const reqNote = req.body as Note;
         const userID = req.query.userID;
+        const reqProjectID = req.query.projectID;
 
         if(!userID){
             res.status(400).json({message: 'User ID is required'});
             return;
         }
-
+        if(!reqProjectID) {
+            res.status(400).json({ message: 'Project ID is required' });
+            return;
+        }
         if(!reqNote.title){
             res.status(400).json({message: 'Title are required'});
             return;
@@ -55,11 +60,17 @@ async function createNote(req: Request, res: Response) {
             content: reqNote.content,
             type: reqNote.type,
             images: reqNote.images,
-            user: userID
+            user: userID,
+            project: reqProjectID
         }
         
         const note = new NoteModel(finalNote);
         await note.save();
+
+        //guardar el id de la nota en el arreglo de notas del proyecto del proyectID
+
+        await ProjectModel.findByIdAndUpdate(reqProjectID, {$push: {notes: note._id}}, {new: true});
+
         res.status(201).json(note);
 
     }catch(error){

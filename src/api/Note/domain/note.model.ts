@@ -22,6 +22,10 @@ const NoteSchema = new mongoose.Schema({
     images: {
         type: [String],
     },
+    project: {
+        type: Schema.Types.ObjectId,
+        ref: 'Project',
+    }
 })
 
 export const NoteModel = mongoose.model('Note', NoteSchema)

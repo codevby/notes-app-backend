@@ -36,7 +36,7 @@ async function createProject(req: Request, res: Response) {
 
         const reqProject = req.body as Project;
         const notes = req.body.notes;
-        const userID = req.params.userID;
+        const userID = req.query.userID;
 
         if(!userID){
             res.status(400).json({message: 'User ID is required'});
