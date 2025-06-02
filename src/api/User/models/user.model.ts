@@ -7,3 +7,9 @@ export type User = {
     status: boolean,
     projects: Types.ObjectId[]
 }
+
+export type Token = {
+    username: string;
+    userId: string;
+    status: boolean;
+}

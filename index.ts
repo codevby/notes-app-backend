@@ -1,4 +1,4 @@
-import dotenv from 'dotenv'; 
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 import { Server } from './src/server/server';

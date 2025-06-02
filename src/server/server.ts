@@ -4,7 +4,6 @@ import cors from 'cors';
 const {dbConnection} = require('../database/config.db');
 import { api } from "../routes/index.routes";
 import { createServer } from 'http';
-import { validateID } from '../middlewares/validateID.middleware';
 
 export class Server {
 
@@ -20,6 +19,7 @@ export class Server {
         this.dbConnection();
         this.middleware();
         this.routes();
+
     }
 
     private async dbConnection(){

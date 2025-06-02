@@ -9,8 +9,13 @@ userRouter
 
     .get('/', UserController.getAllUsers)
     .get('/:id', validateID(), UserController.getUserById)
-    .post('/', UserController.createUser)
+
+    .post('/register', UserController.createUser)
+    .post('/login', UserController.login)
+    .post('/token', UserController.tokenVerify)
+
     .put('/:id', validateID(),UserController.updateUser)
+    
     .delete('/:id', validateID(),UserController.deleteUser)
 
 export const userRouters = userRouter;
